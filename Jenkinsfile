@@ -1,31 +1,8 @@
-  pipeline{
-    agent {
-        label 'NODEJS'
-    }
-    stages {
-        stage('Download Dependencies') {
-            steps {
-                sh '''
-                npm install
-            '''
-            }
-        }
-        stage('prepare Artifacts') {
-            steps {
-                sh '''
-                zip -r todo.zip *
-            '''
-            }
-        }
-        stage('upload Artifacts') {
-            steps {
-                sh '''
-		curl -f -v -u admin:kavya --upload-file todo.zip http://172.31.6.66:8081/repository/todo/todo.zip	
-	    '''
-                }
-            }
-        }
-    }
-
-
-
+@Library('todoshop') _
+todoshop (
+        COMPONENT             : 'todo',
+        PROJECT_NAME          : "todoshop",
+        SLAVE_LABEL           : "NODEJS",
+        SKIP_NEXUS_UPLOAD     : false,
+        APP_TYPE              : "NODEJS"
+)
