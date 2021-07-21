@@ -1,11 +1,10 @@
 [Unit]
-Description=Todo service
+Description=Todo Service
 
 [Service]
-Environment=REDIS_HOST=redis.kavya.website.com
-ExecStart=/bin/node /root/todoshell/todo/todo/server.js
-SyslogIdentifier=todo
-Restart=on-failure
-SyslogIdentifier=todo
+Environment=REDIS_HOST=redis-endpoi
+ExecStart=/bin/node /home/ubuntu/todo/server.js
+SyslogIdentifier =todo
+
 [Install]
 WantedBy=multi-user.target
