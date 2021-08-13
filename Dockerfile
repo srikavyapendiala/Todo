@@ -1,22 +1,12 @@
-FROM node
-
-RUN mkdir /app
-
-# Create app directory
-WORKDIR /app
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY server.js .
-
-COPY package.json .
-
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
-#COPY . .
-
-CMD [ "node", "server.js" ]
-EXPOSE 8080
+FROM        node as  Build
+RUN         mkdir /app
+WORKDIR     /app
+COPY        server.js routes.js todoController.js /app/
+COPY        package*.json ./
+RUN         npm install
+FROM        node:stretch-slim
+RUN         mkdir -p /todo
+COPY        --from=Build /app  /todo
+WORKDIR      /todo
+ENV          REDIS_HOST=redis
+CMD         [ "node", "server.js" ]
